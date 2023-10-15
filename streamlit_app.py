@@ -21,9 +21,7 @@ def generate_response(file_name, prompt_input):
     nlp = pipeline("document-question-answering",
                    model="impira/layoutlm-document-qa",
                    )
-    return nlp("https://templates.invoicehome.com/invoice-template-us-neat-750px.png",
-                "What is the invoice number?"
-                )[0]["answer"]
+    return nlp(file_name, prompt_input)[0]["answer"]
 
 #Temp file name
 file_name = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png"
