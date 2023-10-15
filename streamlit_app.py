@@ -25,7 +25,10 @@ def generate_response(file_name, prompt_input):
     nlp = pipeline("document-question-answering",
                    model="impira/layoutlm-document-qa",
                    )
-    return nlp(file_name, prompt_input)
+    return nlp(file_name, prompt_input)['answer']
+
+#Temp file name
+file_name = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png"
 
 # User-provided prompt
 if prompt := st.chat_input():
@@ -37,7 +40,7 @@ if prompt := st.chat_input():
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_response("https://templates.invoicehome.com/invoice-template-us-neat-750px.png", prompt) 
+            response = generate_response(file_name, prompt) 
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
