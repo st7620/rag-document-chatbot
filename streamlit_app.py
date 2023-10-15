@@ -23,7 +23,7 @@ def generate_response(file_name, prompt_input):
                    )
     return nlp("https://templates.invoicehome.com/invoice-template-us-neat-750px.png",
                 "What is the invoice number?"
-                )[2]
+                )[0]["answer"]
 
 #Temp file name
 file_name = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png"
