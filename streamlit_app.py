@@ -17,14 +17,11 @@ for message in st.session_state.messages:
         st.write(message["content"])
 
 # Function for generating response
-def generate_response(file_name, prompt_input):                       
+def generate_response(uploaded_file, prompt_input):                       
     nlp = pipeline("document-question-answering",
                    model="impira/layoutlm-document-qa",
                    )
-    return nlp(file_name, prompt_input)[0]["answer"]
-
-#Temp file name
-file_name = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png"
+    return nlp(uploaded_file, prompt_input)[0]["answer"]
 
 # User-provided prompt
 if prompt := st.chat_input():
@@ -36,7 +33,7 @@ if prompt := st.chat_input():
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_response(file_name, prompt) 
+            response = generate_response(uploaded_file, prompt) 
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
