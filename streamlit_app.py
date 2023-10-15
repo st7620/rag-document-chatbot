@@ -5,11 +5,7 @@ from transformers import pipeline
 st.set_page_config(page_title="Document Chatbot")
 
 # File uploader widget
-uploaded_files = st.file_uploader("Choose an image file", accept_multiple_files=True)
-for uploaded_file in uploaded_files:
-    bytes_data = uploaded_file.read()
-    st.write("filename:", uploaded_file.name)
-    st.write(bytes_data)
+uploaded_file = st.file_uploader("Choose an image file", type =  ['png', 'jpg'])
 
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
@@ -25,7 +21,9 @@ def generate_response(file_name, prompt_input):
     nlp = pipeline("document-question-answering",
                    model="impira/layoutlm-document-qa",
                    )
-    return nlp(file_name, prompt_input)['answer']
+    return nlp("https://templates.invoicehome.com/invoice-template-us-neat-750px.png",
+                "What is the invoice number?"
+                )['answer']
 
 #Temp file name
 file_name = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png"
