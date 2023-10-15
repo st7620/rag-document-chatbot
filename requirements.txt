@@ -1,2 +1,5 @@
 streamlit>=1.26.0
-hugchat==0.0.8
+transformers
+Pillow
+pytesseract
+torch
