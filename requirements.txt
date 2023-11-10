@@ -1,5 +1,7 @@
 streamlit>=1.26.0
-transformers
+transformers==4.23
 Pillow
 pytesseract
 torch
+docquery
+pydantic<2

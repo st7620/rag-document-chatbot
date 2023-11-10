@@ -1,11 +1,12 @@
 import streamlit as st
-from transformers import pipeline
+#from transformers import pipeline
+from docquery import document, pipeline
 
 # App title
 st.set_page_config(page_title="Document Chatbot")
 
 # File uploader widget
-uploaded_file = st.file_uploader("Choose an image file", type =  ['png', 'jpg'])
+uploaded_file = st.file_uploader("Choose a file")
 
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
@@ -18,10 +19,9 @@ for message in st.session_state.messages:
 
 # Function for generating response
 def generate_response(uploaded_file, prompt_input):                       
-    nlp = pipeline("document-question-answering",
-                   model="impira/layoutlm-document-qa",
-                   )
-    return nlp(uploaded_file, prompt_input)[0]["answer"]
+    p = pipeline("document-question-answering")
+    doc = document.load_document(uploaded_file)
+    return p(question=prompt_input, **doc.context)[0]["answer"]
 
 # User-provided prompt
 if prompt := st.chat_input():
