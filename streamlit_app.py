@@ -20,8 +20,8 @@ for message in st.session_state.messages:
 # Function for generating response
 def generate_response(uploaded_file, prompt_input):                       
     p = pipeline("document-question-answering")
-    doc = document.load_document(uploaded_file)
-    return p(question=prompt_input, **doc.context)[0]["answer"]
+    #doc = document.load_document(uploaded_file)
+    return p(question=prompt_input, uploaded_file)[0]["answer"]
 
 # User-provided prompt
 if prompt := st.chat_input():
