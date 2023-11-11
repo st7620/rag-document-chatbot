@@ -5,5 +5,3 @@ pytesseract
 torch
 docquery
 pydantic<2
-python-poppler
-poppler-utils
