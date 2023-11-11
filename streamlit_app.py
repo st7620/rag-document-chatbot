@@ -1,12 +1,21 @@
 import streamlit as st
 #from transformers import pipeline
 from docquery import document, pipeline
+import tempfile
+import os
 
 # App title
 st.set_page_config(page_title="Document Chatbot")
 
 # File uploader widget  
-doc = document.load_document(st.file_uploader("Choose a file"))
+uploaded_file = st.file_uploader("Choose a file")
+
+# Upload file to temp folder and get file path
+if uploaded_file:
+        temp_dir = tempfile.mkdtemp()
+        path = os.path.join(temp_dir, uploaded_file.name)
+        with open(path, "wb") as f:
+                f.write(uploaded_file.getvalue())
 
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
@@ -20,6 +29,7 @@ for message in st.session_state.messages:
 # Function for generating response
 def generate_response(uploaded_file, prompt_input):                       
     p = pipeline("document-question-answering")
+    doc = document.load_document(f)
     return p(question=prompt_input, **doc.context)[0]["answer"]
 
 # User-provided prompt
@@ -32,7 +42,7 @@ if prompt := st.chat_input():
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_response(doc, prompt) 
+            response = generate_response(f, prompt) 
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
