@@ -5,8 +5,8 @@ from docquery import document, pipeline
 # App title
 st.set_page_config(page_title="Document Chatbot")
 
-# File uploader widget
-uploaded_file = st.file_uploader("Choose a file")
+# File uploader widget  
+doc = document.load_document(st.file_uploader("Choose a file"))
 
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
@@ -20,7 +20,7 @@ for message in st.session_state.messages:
 # Function for generating response
 def generate_response(uploaded_file, prompt_input):                       
     p = pipeline("document-question-answering")
-    doc = document.load_document(uploaded_file)
+    #doc = document.load_document(uploaded_file)
     return p(question=prompt_input, **doc.context)[0]["answer"]
 
 # User-provided prompt
