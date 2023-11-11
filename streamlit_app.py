@@ -30,7 +30,7 @@ for message in st.session_state.messages:
 def generate_response(uploaded_file, prompt_input):                       
     p = pipeline("document-question-answering")
     doc = document.load_document(path)
-    return p(question=prompt_input, **doc.context)[0]["answer"]
+    return p(question="What is the invoice number?", **doc.context)[0]["answer"]
 
 # User-provided prompt
 if prompt := st.chat_input():
