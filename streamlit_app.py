@@ -20,7 +20,6 @@ for message in st.session_state.messages:
 # Function for generating response
 def generate_response(uploaded_file, prompt_input):                       
     p = pipeline("document-question-answering")
-    #doc = document.load_document(uploaded_file)
     return p(question=prompt_input, **doc.context)[0]["answer"]
 
 # User-provided prompt
@@ -33,7 +32,7 @@ if prompt := st.chat_input():
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = generate_response(uploaded_file, prompt) 
+            response = generate_response(doc, prompt) 
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
