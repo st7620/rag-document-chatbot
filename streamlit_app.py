@@ -12,10 +12,10 @@ uploaded_file = st.file_uploader("Choose a file")
 
 # Upload file to temp folder and get file path
 if uploaded_file:
-        temp_dir = tempfile.mkdtemp()
-        path = os.path.join(temp_dir, uploaded_file.name)
-        with open(path, "wb") as f:
-                f.write(uploaded_file.getvalue())
+    temp_dir = tempfile.mkdtemp()
+    path = os.path.join(temp_dir, uploaded_file.name)
+    with open(path, "wb") as f:
+        f.write(uploaded_file.getvalue())
 
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
