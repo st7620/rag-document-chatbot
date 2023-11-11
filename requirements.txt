@@ -4,4 +4,4 @@ Pillow
 pytesseract
 torch
 docquery
-pydantic<2
+pydantic
