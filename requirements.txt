@@ -1,4 +1,11 @@
 streamlit>=1.26.0
+git+https://github.com/neuml/txtai
+sentencepiece
+sacremoses
+fasttext
+git+https://github.com/neuml/txtai#egg=txtai[pipeline]
+nltk
+tika
 transformers==4.23
 Pillow
 pytesseract
