@@ -13,5 +13,3 @@ sentencepiece>=0.1.91
 git+https://github.com/neuml/txtai#egg=txtai[pipeline]
 nltk
 tika
-
-
