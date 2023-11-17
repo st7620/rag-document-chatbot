@@ -13,13 +13,12 @@ st.set_page_config(page_title="Document Chatbot")
 # File uploader widget  
 uploaded_files = st.file_uploader("Choose your files", accept_multiple_files=True)
 
-# Create textractor model
-textractor = Textractor()
-
 # Check if there are any uploaded files
 if uploaded_files:
     data = []
     for file in uploaded_files:
+        # Create textractor model
+        textractor = Textractor()
 
         # Get file path
         temp_dir = tempfile.mkdtemp()
