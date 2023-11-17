@@ -7,6 +7,6 @@ txtai[pipeline]
 nltk
 tika
 transformers==4.23
-Pillow
+Pillow==8.3.2
 pytesseract
 torch
