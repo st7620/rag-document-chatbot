@@ -1,6 +1,7 @@
 import streamlit as st
 from txtai import Embeddings
 import nltk
+nltk.download('punkt')
 from txtai.pipeline import Textractor
 import tempfile
 import os
@@ -16,8 +17,6 @@ uploaded_files = st.file_uploader("Choose your files", accept_multiple_files=Tru
 if uploaded_files:
     # Create textractor model
     textractor = Textractor()
-
-    nltk.download('punkt')
     
     data = []
     for file in uploaded_files:
