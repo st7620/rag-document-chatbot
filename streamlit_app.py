@@ -13,6 +13,22 @@ st.set_page_config(page_title="Document Chatbot")
 # File uploader widget  
 uploaded_files = st.file_uploader("Choose your files", accept_multiple_files=True)
 
+# Store LLM generated responses
+if "messages" not in st.session_state.keys():
+    st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
+
+# Function for generating response
+def generate_response(prompt_input):                       
+    context = embeddings.search(prompt_input, 1)[0]["text"]
+    question_set = {"context": context, "question": prompt_input}
+    return nlp(question_set)["answer"]
+
+# User-provided prompt
+if prompt := st.chat_input():
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.write(prompt)
+
 # Check if there are any uploaded files
 if uploaded_files:
     # Create textractor model
@@ -42,22 +58,6 @@ if uploaded_files:
 
     # Create an index for the list of text
     embeddings.index(data)
-
-# Store LLM generated responses
-if "messages" not in st.session_state.keys():
-    st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
-
-# Function for generating response
-def generate_response(prompt_input):                       
-    context = embeddings.search(prompt_input, 1)[0]["text"]
-    question_set = {"context": context, "question": prompt_input}
-    return nlp(question_set)["answer"]
-
-# User-provided prompt
-if prompt := st.chat_input():
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
 
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "assistant":
