@@ -7,9 +7,6 @@ import tempfile
 import os
 from transformers import pipeline
 
-# Disable parallelism warming
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
-
 # App title
 st.set_page_config(page_title="Document Chatbot")
 
@@ -46,8 +43,11 @@ if uploaded_files:
     embeddings.index(data)
 
 # Store LLM generated responses
-if "messages" not in st.session_state.keys():
+if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
+
+print("STATE")
+print(st.session_state)
 
 # Display chat messages
 for message in st.session_state.messages:
