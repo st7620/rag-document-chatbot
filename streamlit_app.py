@@ -7,6 +7,9 @@ import tempfile
 import os
 from transformers import pipeline
 
+# Disable parallelism warming
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 # App title
 st.set_page_config(page_title="Document Chatbot")
 
