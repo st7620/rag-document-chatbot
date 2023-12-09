@@ -42,6 +42,7 @@ if uploaded_files:
     # Create embeddings with content enabled. The default behavior is to only store indexed vectors.
     embeddings = Embeddings(path="sentence-transformers/nli-mpnet-base-v2", content=True, objects=True)
 
+    # print(embeddings)
     # Create an index for the list of text
     embeddings.index(data)
 
@@ -65,15 +66,23 @@ def generate_response(prompt_input):
 
 # User-provided prompt
 if prompt := st.chat_input():
+    print("user prompt: ")
+    print(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
+        print("trying to write")
         st.write(prompt)
+        print("after write")
 
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
+            print("responding to prompt: ")
+            print(prompt)
+            print("response:")
             response = generate_response(prompt) 
+            print(response)
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
