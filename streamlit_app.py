@@ -1,14 +1,15 @@
+import os
+# Disable parallelism warming
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import streamlit as st
 from txtai import Embeddings
 import nltk
 nltk.download('punkt')
-from txtai.pipeline import Textractor
 import tempfile
-import os
 from transformers import pipeline
+from pypdf import PdfReader
+import io
 
-# Disable parallelism warming
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 # App title
 st.set_page_config(page_title="Document Chatbot")
@@ -16,42 +17,48 @@ st.set_page_config(page_title="Document Chatbot")
 # File uploader widget  
 uploaded_files = st.file_uploader("Choose your files", accept_multiple_files=True)
 
+# Load embedding model
+@st.cache_resource
+def load_embeddings():
+    return Embeddings(path="sentence-transformers/nli-mpnet-base-v2", content=True, objects=True)
+
+embeddings = load_embeddings()
+
+# Load NLP model
+@st.cache_resource
+def load_nlp_model():
+    return pipeline("question-answering",
+                    model="deepset/roberta-base-squad2",
+                    tokenizer="deepset/roberta-base-squad2",)
+
+nlp = load_nlp_model()
+
 # Check if there are any uploaded files
 if uploaded_files:
     data = []
     for file in uploaded_files:
-        # Create textractor model
-        textractor = Textractor()
+        file_contents = file.read()
+        remote_file_bytes = io.BytesIO(file_contents)
+        pdfdoc_remote = PdfReader(remote_file_bytes)
 
-        # Get file path
-        temp_dir = tempfile.mkdtemp()
-        path = os.path.join(temp_dir, file.name)
-        with open(path, "wb") as f:
-            f.write(file.getvalue())
-        
-        # Extract text from pdf file
-        data.append(textractor(path))
+        pdf_text = ""
 
-    # Set up model pipeline
-    nlp = pipeline(
-        "question-answering",
-        model="deepset/roberta-base-squad2",
-        tokenizer="deepset/roberta-base-squad2",
-    )
+        # Extract text by page
+        for i in range(len(pdfdoc_remote.pages)):
+            print(i)
+            page = pdfdoc_remote.pages[i]
+            page_content = page.extract_text()
+            pdf_text += page_content
 
-    # Create embeddings with content enabled. The default behavior is to only store indexed vectors.
-    embeddings = Embeddings(path="sentence-transformers/nli-mpnet-base-v2", content=True, objects=True)
+        # Add text to data list
+        data.append(pdf_text)
 
-    # print(embeddings)
     # Create an index for the list of text
     embeddings.index(data)
 
 # Store LLM generated responses
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
-
-print("STATE")
-print(st.session_state)
 
 # Display chat messages
 for message in st.session_state.messages:
