@@ -1,15 +1,8 @@
-import os
-# Disable parallelism warming
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import streamlit as st
 from txtai import Embeddings
-import nltk
-nltk.download('punkt')
-import tempfile
 from transformers import pipeline
 from pypdf import PdfReader
 import io
-
 
 # App title
 st.set_page_config(page_title="Document Chatbot")
@@ -45,7 +38,6 @@ if uploaded_files:
 
         # Extract text by page
         for i in range(len(pdfdoc_remote.pages)):
-            print(i)
             page = pdfdoc_remote.pages[i]
             page_content = page.extract_text()
             pdf_text += page_content
@@ -73,23 +65,15 @@ def generate_response(prompt_input):
 
 # User-provided prompt
 if prompt := st.chat_input():
-    print("user prompt: ")
-    print(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
-        print("trying to write")
         st.write(prompt)
-        print("after write")
 
 # Generate a new response if last message is not from assistant
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            print("responding to prompt: ")
-            print(prompt)
-            print("response:")
             response = generate_response(prompt) 
-            print(response)
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
