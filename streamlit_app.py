@@ -2,7 +2,10 @@ import streamlit as st
 from txtai import Embeddings
 from transformers import pipeline
 from pypdf import PdfReader
-import io
+import io, os
+
+# Set environment variable to avoid KMP duplicate library error
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 # App title
 st.set_page_config(page_title="Document Chatbot")
