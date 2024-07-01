@@ -1,25 +1,7 @@
-# 📦 Streamlit App Starter Kit 
-```
-⬆️ (Replace above with your app's name)
-```
+# Document Chatbot
 
-Description of the app ...
+This is an end-to-end self-hosted chatbot application that answers questions about user-uploaded documents, created with Break Through Tech AI @ Cornell Tech and JPMorgan Chase. This chatbot utilizes the RAG framework to store PDF documents using an embedding model and a vector database. Using semantic search, it then selects the document that is most relevant to the user's query and provides this document as enhanced context with the query for an pre-trained LLM to generate an answer.
 
 ## Demo App
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://app-starter-kit.streamlit.app/)
-
-## GitHub Codespaces
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/app-starter-kit?quickstart=1)
-
-## Section Heading
-
-This is filler text, please replace this with text for this section.
-
-## Further Reading
-
-This is filler text, please replace this with a explanatory text about further relevant resources for this repo
-- Resource 1
-- Resource 2
-- Resource 3
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://rag-document-chatbot-3m33nueb3aqbexlyfaucra.streamlit.app/)
